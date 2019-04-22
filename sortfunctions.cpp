@@ -22,6 +22,7 @@ int partition (std::vector<int>& table, int startingIndex, int endingIndex)
   return (i + 1); 
 } 
 
+
 void quickSortIterative ( std::vector<int>& table, int startingIndex,
                          int endingIndex ) 
 { 
@@ -53,23 +54,25 @@ void quickSortIterative ( std::vector<int>& table, int startingIndex,
   }
 };
 
+
 void selectionSort( std::vector<int>& numbers )
 {
-  int firstSortedElement {0};
-  while( firstSortedElement < std::size( numbers ) )
+  for(int indexFirstElement = 0 ; 
+      indexFirstElement < std::size( numbers ) - 1 ; 
+      indexFirstElement++ )
   {
-    int indexMinimalElement { firstSortedElement };
-    for(int index=firstSortedElement; index < std::size(numbers); index++)
+    int indexMinimalElement = indexFirstElement ;
+    for( int index = indexFirstElement + 1 ; index < std::size( numbers ); index++ )
     { 
-       if(numbers.at(index)<numbers.at(indexMinimalElement))
-       {
-         indexMinimalElement=index;
-       }  
-       std::swap(numbers.at(firstSortedElement),numbers.at(indexMinimalElement));
-       firstSortedElement++;
+      if( numbers[index] < numbers[ indexMinimalElement ])
+      {
+        indexMinimalElement = index;
+      }    
     }
+    std::swap( numbers.at( indexMinimalElement ), numbers.at( indexFirstElement ) );
   }  
 };
+
 
 void bubbleSort( std::vector<int>& numbers )
 {
