@@ -6,9 +6,9 @@
 #include <vector>
 #include <algorithm>
 
-int partition ( std::vector<int>& , int, int );
-void quickSortIterative (std::vector<int>& , int, int );
-void selectionSort( std::vector<int>& );
-void bubbleSort( std::vector<int>& );
+int  partition ( std::vector<int>& , int, int );
+void quickSortIterative ( std::vector<int>& , int, int );
+void selectionSort ( std::vector<int>& );
+void bubbleSort ( std::vector<int>& );
 
 #endif //SORT_FUNCTION_H

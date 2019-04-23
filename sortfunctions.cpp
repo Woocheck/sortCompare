@@ -5,21 +5,21 @@
 #include <algorithm>
 
     
-int partition (std::vector<int>& table, int startingIndex, int endingIndex) 
+int partition ( std::vector<int>& table, int startingIndex, int endingIndex ) 
 { 
-  int pivot = table.at(endingIndex); 
-  int i = (startingIndex - 1); 
+  int pivot = table.at( endingIndex ); 
+  int i = ( startingIndex - 1 ); 
 
   for (int j = startingIndex; j <= endingIndex- 1; j++) 
   { 
-      if (table.at(j) <= pivot) 
+      if (table.at( j ) <= pivot) 
       { 
           i++; 
-          std::swap (table.at(i), table.at(j)); 
+          std::swap( table.at( i ), table.at( j ) ); 
       } 
   } 
-  std::swap (table[i + 1], table[endingIndex]); 
-  return (i + 1); 
+  std::swap( table.at( i+1 ), table.at( endingIndex ) ); 
+  return ( i + 1 ); 
 } 
 
 
@@ -30,34 +30,31 @@ void quickSortIterative ( std::vector<int>& table, int startingIndex,
   stack.resize( endingIndex - startingIndex + 1 );
   int topOfStack = -1; 
 
-  stack[ ++topOfStack ] = startingIndex; 
-  stack[ ++topOfStack ] = endingIndex; 
+  stack.at( ++topOfStack ) = startingIndex; 
+  stack.at( ++topOfStack ) = endingIndex; 
 
   while ( topOfStack >= 0 ) 
   { 
-      endingIndex = stack[ topOfStack-- ]; 
-      startingIndex = stack[ topOfStack-- ]; 
- 
-      int p = partition( table, startingIndex, endingIndex ); 
+    endingIndex = stack.at( topOfStack-- ); 
+    startingIndex = stack.at( topOfStack-- ); 
 
-      if ( p-1 > startingIndex ) 
-      { 
-          stack[ ++topOfStack ] = startingIndex; 
-          stack[ ++topOfStack ] = p - 1; 
-      } 
-
-      if ( p+1 < endingIndex ) 
-      { 
-          stack[ ++topOfStack ] = p + 1; 
-          stack[ ++topOfStack ] = endingIndex;
-      } 
+    int p = partition( table, startingIndex, endingIndex ); 
+    if ( p-1 > startingIndex ) 
+    { 
+        stack.at( ++topOfStack ) = startingIndex; 
+        stack.at( ++topOfStack ) = p - 1; 
+    } 
+    if ( p+1 < endingIndex ) 
+    { 
+        stack.at( ++topOfStack ) = p + 1; 
+        stack.at( ++topOfStack ) = endingIndex;
+    } 
   }
 };
 
-
 void selectionSort( std::vector<int>& numbers )
 {
-  for(int indexFirstElement = 0 ; 
+  for( int indexFirstElement = 0 ; 
       indexFirstElement < std::size( numbers ) - 1 ; 
       indexFirstElement++ )
   {
@@ -79,14 +76,14 @@ void bubbleSort( std::vector<int>& numbers )
   bool isChanged;
   do
   {
-    isChanged =false;
-    for( int i=1; i < numbers.size(); i++ )
-     if( numbers[i-1] > numbers[i] )
+    isChanged = false;
+    for( int i = 1; i < numbers.size(); i++ )
+     if( numbers.at( i ) > numbers.at( i ) )
      {
-       auto t=numbers[i];
-       numbers[i]=numbers[i-1];
-       numbers[i-1]=t;
-       isChanged=true;
+       auto t=numbers.at( i );
+       numbers.at( i ) = numbers.at( i );
+       numbers.at( i ) = t;
+       isChanged = true;
      }
   } while ( isChanged );
 };
