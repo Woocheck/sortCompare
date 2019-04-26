@@ -11,28 +11,15 @@
 
 #include "printtable.h"
 
-void printTableHeader( const std::map < std::string, std::string >& tempMethodsList,
-                       const std::vector<int>& sortedElementsNumber)
+void Table::printTableHeader()
 {
-   
-   int widthOfTable {2};
-   int widthOfColumn {2};
+   int widthOfTable = widthOfAllColumns();
 
-   widthOfColumn += getMethodsNameSize( tempMethodsList );
-   if(widthOfColumn < 13) widthOfColumn = 13;
-
-   widthOfTable += widthOfColumn;
-   
-   for( auto column : sortedElementsNumber )
-   {      
-      widthOfColumn = std::size( std::to_string( column ) ); 
-      if(widthOfColumn < 13) widthOfColumn = 13;
-      widthOfTable += widthOfColumn;
-      widthOfTable += 1;
-   }
    std::cout << std::setfill( '-' ) << std::setw(widthOfTable) << std::endl;
-   std::cout << std::setw( getMethodsNameSize( tempMethodsList ) + 1) <<
+   std::cout << std::setw( methodsNameMaxSize() + 1) <<
              " Method Name";
+   
+   int widthOfColumn {2};
    for( auto column : sortedElementsNumber )
    {      
       widthOfColumn = std::size( std::to_string( column ) ); 
@@ -43,34 +30,53 @@ void printTableHeader( const std::map < std::string, std::string >& tempMethodsL
    std::cout << std::endl;
 };
 
-void printTableRow( const std::string& methodName, const std::vector<int>& sortedElementsNumber, 
-                    const std::vector<std::string>& results,
-                    const std::map < std::string, std::string >& tempMethodsList )
+void Table::printTableRow( const std::string& methodName, 
+                           const std::vector<std::string>& results )
 {
    int widthOfColumn {2};
-   widthOfColumn += getMethodsNameSize( tempMethodsList );
+   widthOfColumn += methodsNameMaxSize();
    if(widthOfColumn < 13) widthOfColumn = 13;
-   std::cout << std::setfill( ' ' ) << std::setw(widthOfColumn) 
-             << methodName;
+   std::cout << std::setfill( ' ' ) << std::setw(widthOfColumn) << methodName;
+
    for( int i = 0; i < std::size(sortedElementsNumber); i++ )
    {      
-      widthOfColumn = std::size( std::to_string( sortedElementsNumber[i] ) ); 
+      widthOfColumn = std::size( std::to_string( sortedElementsNumber.at(i) ) ); 
       if(widthOfColumn < 13) widthOfColumn = 13;
       std::cout << std::setw( widthOfColumn + 2 ) << std::internal << 
-                results[i];
+                results.at(i);
    }
     
     std::cout << std::endl;
-
 };
 
-int getMethodsNameSize( const std::map < std::string, std::string >& methodsList)
+int Table::methodsNameMaxSize()
 {
    int maxSize {0};
-   for( const auto& name : methodsList )
+   for( const auto& name : sortingMethods )
    {
       if( maxSize < std::size( name.second ) ) maxSize = std::size( name.second );
    }
 
    return maxSize;
+};
+
+int Table::widthOfAllColumns()
+{
+   int result {2};
+   int widthOfColumn {2};
+
+   widthOfColumn += methodsNameMaxSize();
+   if(widthOfColumn < 13) widthOfColumn = 13;
+
+   result += widthOfColumn;
+   
+   for( auto column : sortedElementsNumber )
+   {      
+      widthOfColumn = std::size( std::to_string( column ) ); 
+      if(widthOfColumn < 13) widthOfColumn = 13;
+      result += widthOfColumn;
+      result += 1;
+   }
+
+   return result;
 };

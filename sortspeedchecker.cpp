@@ -1,12 +1,14 @@
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstdlib>
 #include <map>
 #include <vector> 
 #include <iomanip>
 #include <algorithm>
 #include <iterator>
-#include <fstream>
+
 
 #include "printtable.h"
 
@@ -17,33 +19,30 @@ std::string getResult();
 int main() {
 
    std::map < std::string, std::string > sortingMethods;
-   std::vector<int> sortedElementsNumber{ 1000, 10000, 50000 };
+   std::vector<int> sortedElementsNumber{ 1000, 10000, 20000 };
    sortingMethods = sortMethodsInitialisation();
+
+   Table table(sortingMethods,sortedElementsNumber);
+   table.printTableHeader();
    
-   printTableHeader(sortingMethods, sortedElementsNumber );
 
    for( const auto& [ methodArgument, methodName ]: sortingMethods )
    {
       std::vector<std::string> result;
-      
-
+   
       for( auto elements : sortedElementsNumber )
-      {         
-         
-         std::string commandLine {};
-         commandLine = getCommand( elements, methodArgument );
-
-         system(commandLine.c_str());
-
+      {       
+         system(getCommand( elements, methodArgument ).c_str() );
          result.push_back( getResult() );
-         
       }
-      printTableRow( methodName, sortedElementsNumber, result, sortingMethods );
+
+      table.printTableRow( methodName, result );
    }
    std::cout << std::endl;
    
    return 0;
 }
+
 
 std::map < std::string, std::string > sortMethodsInitialisation()
 {
@@ -58,14 +57,12 @@ std::map < std::string, std::string > sortMethodsInitialisation()
 
 std::string getCommand( int elementsNumber , std::string argument )
 {
-   std::string commandLine { "( /usr/bin/time -f \"%E\" ./sort " };
+   std::stringstream commandLine {};
    
-   commandLine += std::to_string( elementsNumber );
-   commandLine += " ";
-   commandLine += argument;
-   commandLine += " ) 2> tmp.txt";
+   commandLine <<"( /usr/bin/time -f \"%E\" ./sort " << elementsNumber 
+               << " " << argument << " ) 2> tmp.txt";
 
-   return commandLine;
+   return commandLine.str();
 };
 
 std::string getResult()
