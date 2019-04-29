@@ -15,6 +15,7 @@
 std::map < std::string, std::string > sortMethodsInitialisation();
 std::string getCommand( int , std::string );
 std::string getResult();
+void removeTempFile();
 
 int main() {
 
@@ -28,17 +29,19 @@ int main() {
 
    for( const auto& [ methodArgument, methodName ]: sortingMethods )
    {
-      std::vector<std::string> result;
+      std::vector<std::string> singleMethodResults;
    
       for( auto elements : sortedElementsNumber )
       {       
          system(getCommand( elements, methodArgument ).c_str() );
-         result.push_back( getResult() );
+         singleMethodResults.push_back( getResult() );
       }
 
-      table.printTableRow( methodName, result );
+      table.printTableRow( methodName, singleMethodResults );
    }
    std::cout << std::endl;
+   
+   removeTempFile();
    
    return 0;
 }
@@ -59,7 +62,7 @@ std::string getCommand( int elementsNumber , std::string argument )
 {
    std::stringstream commandLine {};
    
-   commandLine <<"( /usr/bin/time -f \"%E\" ./sort " << elementsNumber 
+   commandLine << "( /usr/bin/time -f \"%E\" ./sort " << elementsNumber 
                << " " << argument << " ) 2> tmp.txt";
 
    return commandLine.str();
@@ -76,3 +79,16 @@ std::string getResult()
    return sortingTime;
 };
 
+void removeTempFile()
+{
+   try
+   {
+      system("rm tmp.txt");
+
+   }
+   catch(const std::exception& e)
+   {
+      std::cerr << e.what() << '\n';
+   }
+ };  
+   
